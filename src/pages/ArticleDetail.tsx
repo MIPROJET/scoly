@@ -35,7 +35,10 @@ import { toast } from "sonner";
 interface MediaItem {
   url: string;
   type: "image" | "video";
+  /** Paid media: `url` is a private storage path resolved via a signed URL. */
+  bucket?: string;
 }
+
 
 interface Article {
   id: string;
