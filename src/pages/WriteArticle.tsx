@@ -24,7 +24,10 @@ import { cn } from "@/lib/utils";
 interface MediaItem {
   url: string;
   type: "image" | "video";
+  /** When set, `url` is a storage path inside this private (paid) bucket. */
+  bucket?: string;
 }
+
 
 type GenerationMode = "single_image" | "video" | "image_video" | "multi_image" | "text_only";
 
