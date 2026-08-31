@@ -97,8 +97,14 @@ export const MediaUpload = ({
         const folder = isVideo ? "videos" : "images";
         const filePath = `${folder}/${fileName}`;
 
+        // Cover (index 0) stays public so listings can show a thumbnail.
+        // Everything else on a paid article goes to the private bucket.
+        const targetIndex = value.length + newMedia.length;
+        const isPrivate = Boolean(premiumBucket) && targetIndex > 0;
+        const targetBucket = isPrivate ? premiumBucket! : bucket;
+
         const { error: uploadError } = await supabase.storage
-          .from(bucket)
+          .from(targetBucket)
           .upload(filePath, file, {
             cacheControl: "3600",
             upsert: false,
@@ -106,8 +112,8 @@ export const MediaUpload = ({
 
         if (uploadError) {
           console.error("Upload error:", uploadError);
-          // Fallback to base64 for images only
-          if (isImage) {
+          // Fallback to base64 for images only (never for paid media)
+          if (isImage && !isPrivate) {
             const reader = new FileReader();
             const base64Url = await new Promise<string>((resolve) => {
               reader.onloadend = () => resolve(reader.result as string);
@@ -120,14 +126,24 @@ export const MediaUpload = ({
           continue;
         }
 
+        if (isPrivate) {
+          newMedia.push({
+            url: filePath,
+            type: isVideo ? "video" : "image",
+            bucket: targetBucket,
+          });
+          continue;
+        }
+
         const { data: { publicUrl } } = supabase.storage
-          .from(bucket)
+          .from(targetBucket)
           .getPublicUrl(filePath);
 
         newMedia.push({
           url: publicUrl,
           type: isVideo ? "video" : "image",
         });
+
       }
 
       if (newMedia.length > 0) {
