@@ -85,7 +85,7 @@ const FeaturesSection = () => {
     },
     {
       icon: <ShoppingBag size={24} />,
-      title: language === "fr" ? "Kit École" : "School kit",
+      title: language === "fr" ? "Kits scolaires par école" : "School kit",
       description: language === "fr" ? "Listes par niveau, articles vérifiés et ajout rapide au panier." : "Grade-based lists, verified items and quick cart add.",
     },
     {

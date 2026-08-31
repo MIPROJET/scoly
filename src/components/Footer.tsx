@@ -32,7 +32,7 @@ const Footer = () => {
     {
       title: "Scoly",
       links: [
-        { label: "Kit École", href: "/kits-scolaires" },
+        { label: "Kits scolaires par école", href: "/kits-scolaires" },
         { label: "Programme parrainage", href: "/parrainage" },
         { label: "Actualités", href: "/actualites" },
       ],
