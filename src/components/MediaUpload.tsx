@@ -205,14 +205,14 @@ export const MediaUpload = ({
             >
               {media.type === "video" ? (
                 <video
-                  src={media.url}
+                  src={previewSrc(media)}
                   className="w-full h-full object-cover"
                   muted
                   playsInline
                 />
               ) : (
                 <img
-                  src={media.url}
+                  src={previewSrc(media) || "/placeholder.svg"}
                   alt=""
                   className="w-full h-full object-cover"
                   onError={(e) => {
@@ -220,6 +220,7 @@ export const MediaUpload = ({
                   }}
                 />
               )}
+
               
               {/* Overlay with icons */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
