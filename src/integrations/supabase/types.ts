@@ -3507,6 +3507,7 @@ export type Database = {
           payment_id: string
         }[]
       }
+      force_logout_user: { Args: { _user_id: string }; Returns: number }
       generate_referral_code: { Args: never; Returns: string }
       get_admin_stats: {
         Args: never
