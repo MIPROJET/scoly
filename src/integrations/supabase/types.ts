@@ -3741,6 +3741,7 @@ export type Database = {
         Args: { _article_id: string }
         Returns: undefined
       }
+      increment_coupon_usage: { Args: { _coupon_id: string }; Returns: boolean }
       increment_email_provider_stat: {
         Args: { _provider: string; _success: boolean }
         Returns: undefined
