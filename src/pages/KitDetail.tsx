@@ -198,8 +198,8 @@ const KitDetail = () => {
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   {kit.category && <Badge variant="secondary">{CATEGORY_LABELS[kit.category] || kit.category}</Badge>}
                   <Badge variant="outline">{kit.grade_level}</Badge>
-                  {kit.kind === "scolaire" && <Badge>Kit Scolaire</Badge>}
-                  {kit.kind === "ecole" && <Badge>Kit École</Badge>}
+                  {kit.kind === "scolaire" && <Badge>Kits scolaires</Badge>}
+                  {kit.kind === "ecole" && <Badge>Kits scolaires par école</Badge>}
                 </div>
                 <h1 className="font-display text-2xl md:text-3xl font-bold tracking-tight">{kit.name}</h1>
                 {kit.school_name && (

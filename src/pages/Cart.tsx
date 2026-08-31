@@ -49,7 +49,7 @@ const Cart = () => {
             )}
           </h1>
 
-          {loading ? (
+          {loading && items.length === 0 && kits.length === 0 ? (
             <div className="animate-pulse space-y-3 mt-6">
               {[...Array(3)].map((_, i) => (
                 <div key={i} className="bg-card rounded-xl p-4 flex gap-4">

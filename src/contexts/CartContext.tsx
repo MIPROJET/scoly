@@ -155,8 +155,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     const guestCart = getGuestCart();
     if (guestCart.length === 0) {
       setItems([]);
+      setLoading(false);
       return;
     }
+
 
     setLoading(true);
     try {

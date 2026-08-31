@@ -54,7 +54,7 @@ const KitCoverFallback = ({ kit, schoolName, isPublic }: { kit: Kit; schoolName?
     <div className="relative z-10 flex flex-col items-center gap-1 p-3 text-center">
       <Sparkles className="h-6 w-6" />
       <p className="font-display text-sm font-bold leading-tight line-clamp-2">
-        {CATEGORY_LABELS[kit.category || ""] || (isPublic ? "Kit Scolaire" : "Kit École")}
+        {CATEGORY_LABELS[kit.category || ""] || (isPublic ? "Kits scolaires" : "Kits scolaires par école")}
       </p>
       <p className="text-[10px] opacity-90">{kit.grade_level}</p>
       {schoolName ? <p className="text-[10px] font-semibold uppercase tracking-wide opacity-90">{schoolName}</p> : null}
@@ -205,7 +205,7 @@ const KitsEcole = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Helmet>
-        <title>{isPublic ? "Kit Scolaire — Standards en 1 clic | Scoly" : "Kit École — Officiel de votre établissement | Scoly"}</title>
+        <title>{isPublic ? "Kits scolaires — Standards en 1 clic | Scoly" : "Kits scolaires par école — Officiel de votre établissement | Scoly"}</title>
         <meta
           name="description"
           content={isPublic
@@ -222,7 +222,7 @@ const KitsEcole = () => {
                 {isPublic ? "Nouveau · Kits scolaires standards" : "Kits officiels par établissement"}
               </Badge>
               <h1 className="font-display text-2xl md:text-4xl font-bold tracking-tight">
-                {isPublic ? "Kit Scolaire — l'essentiel en 1 clic" : "Trouvez le Kit École de votre établissement"}
+                {isPublic ? "Kits scolaires — l'essentiel en 1 clic" : "Trouvez le Kits scolaires par école de votre établissement"}
               </h1>
               <p className="text-muted-foreground text-sm md:text-base">
                 {isPublic
@@ -231,10 +231,10 @@ const KitsEcole = () => {
               </p>
               <div className="flex justify-center gap-2 pt-1">
                 <Button size="sm" variant={isPublic ? "default" : "outline"} onClick={() => navigate("/kits-scolaires?type=public")}>
-                  Kit Scolaire
+                  Kits scolaires
                 </Button>
                 <Button size="sm" variant={!isPublic ? "default" : "outline"} onClick={() => navigate("/kits-scolaires?type=ecole")}>
-                  Kit École
+                  Kits scolaires par école
                 </Button>
               </div>
             </div>

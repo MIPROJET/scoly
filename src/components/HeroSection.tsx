@@ -93,14 +93,14 @@ const HeroSection = () => {
                   onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1.5 bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground border border-primary-foreground/30 px-3.5 py-2 rounded-md font-medium text-xs sm:text-sm"
                 >
-                  Kit Scolaire
+                  Kits scolaires
                 </Link>
                 <Link
                   to="/kits-scolaires?type=ecole"
                   onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1.5 bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground border border-primary-foreground/30 px-3.5 py-2 rounded-md font-medium text-xs sm:text-sm"
                 >
-                  Kit École
+                  Kits scolaires par école
                 </Link>
               </div>
             </div>

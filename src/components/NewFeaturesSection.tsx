@@ -8,7 +8,7 @@ const NewFeaturesSection = () => {
   const features = [
     {
       icon: <Package size={28} />,
-      title: language === 'en' ? 'School Kit' : 'Kit École',
+      title: language === 'en' ? 'School Kit' : 'Kits scolaires par école',
       description: language === 'en'
         ? 'Ready-made school kits by grade level, delivered to your door.'
         : 'Kits École prêts par niveau, livrés chez vous.',

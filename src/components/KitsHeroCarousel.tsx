@@ -52,7 +52,7 @@ const KitCard = ({ kit, type }: { kit: Kit; type: "public" | "ecole" }) => {
             <div className="text-center">
               <Package className="h-6 w-6 mx-auto mb-1" />
               <p className="font-display font-bold text-[11px] leading-tight line-clamp-2">
-                {CATEGORY_LABELS[kit.category || ""] || (type === "public" ? "Kit Scolaire" : "Kit École")}
+                {CATEGORY_LABELS[kit.category || ""] || (type === "public" ? "Kits scolaires" : "Kits scolaires par école")}
               </p>
             </div>
           </div>
@@ -117,7 +117,7 @@ const KitsHeroCarousel = () => {
                   <Sparkles className="h-3.5 w-3.5 text-primary" />
                   <Badge variant="secondary" className="text-[9px] uppercase tracking-wide px-1.5 py-0">Standard</Badge>
                 </div>
-                <h2 className="text-base sm:text-lg font-display font-bold">Kit Scolaire</h2>
+                <h2 className="text-base sm:text-lg font-display font-bold">Kits scolaires</h2>
                 <p className="text-[11px] text-muted-foreground">Kits standards, achat en 1 clic</p>
               </div>
               <Link to="/kits-scolaires?type=public" className="text-xs text-primary hover:underline font-medium shrink-0">
@@ -143,7 +143,7 @@ const KitsHeroCarousel = () => {
                   <GraduationCap className="h-3.5 w-3.5 text-primary" />
                   <Badge variant="secondary" className="text-[9px] uppercase tracking-wide px-1.5 py-0">Officiel</Badge>
                 </div>
-                <h2 className="text-base sm:text-lg font-display font-bold">Kit École</h2>
+                <h2 className="text-base sm:text-lg font-display font-bold">Kits scolaires par école</h2>
                 <p className="text-[11px] text-muted-foreground">Validés par les établissements</p>
               </div>
               <Link to="/kits-scolaires?type=ecole" className="text-xs text-primary hover:underline font-medium shrink-0">

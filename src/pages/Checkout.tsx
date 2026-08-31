@@ -609,7 +609,7 @@ const Checkout = () => {
             {t.checkout.title}
           </h1>
 
-          {cartLoading ? (
+          {cartLoading && items.length === 0 && kits.length === 0 ? (
             <div className="flex items-center justify-center py-20 text-muted-foreground">
               <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement du panier…
             </div>
