@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { Search, Calendar, User, Eye, Heart, BookOpen, PenTool, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,8 +35,6 @@ interface Article {
 const Actualites = () => {
   const { language } = useLanguage();
   const { user } = useAuth();
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -48,33 +47,32 @@ const Actualites = () => {
     { value: "guides", label: "Guides" },
   ];
 
-  useEffect(() => {
-    fetchArticles();
-  }, [selectedCategory]);
-
-  const fetchArticles = async () => {
-    setLoading(true);
-    try {
+  // Cached list — only the columns the grid needs (never the heavy content_* fields).
+  const { data: articles = [], isLoading: loading } = useQuery({
+    queryKey: ["public-articles", selectedCategory],
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    queryFn: async (): Promise<Article[]> => {
       let query = supabase
-        .from('articles')
-        .select('*')
-        .eq('status', 'published')
-        .order('published_at', { ascending: false });
+        .from("articles")
+        .select(
+          "id,title_fr,title_en,title_de,title_es,excerpt_fr,excerpt_en,cover_image,category,is_premium,views,likes,published_at,author_id",
+        )
+        .eq("status", "published")
+        .order("published_at", { ascending: false })
+        .limit(60);
 
-      if (selectedCategory !== 'all') {
-        query = query.eq('category', selectedCategory);
+      if (selectedCategory !== "all") {
+        query = query.eq("category", selectedCategory);
       }
 
       const { data, error } = await query;
-
       if (error) throw error;
-      setArticles(data || []);
-    } catch (error) {
-      console.error('Error fetching articles:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return (data || []) as Article[];
+    },
+  });
+
 
   const getTitle = (article: Article) => {
     switch (language) {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, BookOpen, Eye, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -24,12 +25,26 @@ interface Article {
 
 const FeaturedArticlesCarousel = () => {
   const { language } = useLanguage();
-  const [articles, setArticles] = useState<Article[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    fetchFeaturedArticles();
-  }, []);
+  const { data: articles = [] } = useQuery({
+    queryKey: ["featured-articles"],
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
+    queryFn: async (): Promise<Article[]> => {
+      const { data, error } = await supabase
+        .from("articles")
+        .select(
+          "id, title_fr, title_en, title_de, title_es, excerpt_fr, excerpt_en, excerpt_de, excerpt_es, cover_image, views, likes, category",
+        )
+        .eq("status", "published")
+        .order("views", { ascending: false })
+        .limit(8);
+      if (error) throw error;
+      return (data || []) as Article[];
+    },
+  });
 
   // Auto-scroll every 5 seconds
   useEffect(() => {
@@ -39,23 +54,6 @@ const FeaturedArticlesCarousel = () => {
     return () => clearInterval(interval);
   }, [articles.length]);
 
-  const fetchFeaturedArticles = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("articles")
-        .select(
-          "id, title_fr, title_en, title_de, title_es, excerpt_fr, excerpt_en, excerpt_de, excerpt_es, cover_image, views, likes, category"
-        )
-        .eq("status", "published")
-        .order("views", { ascending: false })
-        .limit(8);
-
-      if (error) throw error;
-      setArticles(data || []);
-    } catch (error) {
-      console.error("Error fetching articles:", error);
-    }
-  };
 
   const getLocalizedTitle = (article: Article) => {
     switch (language) {

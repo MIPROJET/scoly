@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Zap, ShoppingCart, Clock, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,23 +12,45 @@ import { Link } from "react-router-dom";
 const FlashDeals = () => {
   const { language, t } = useLanguage();
   const { addToCart } = useCart();
-  const [deals, setDeals] = useState<any[]>([]);
-  const [endsAt, setEndsAt] = useState<Date | null>(null);
+  const [expired, setExpired] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
-  useEffect(() => {
-    fetchDeals();
-  }, []);
+  const { data: fetchedDeals = [] } = useQuery({
+    queryKey: ["flash-deals"],
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    queryFn: async (): Promise<any[]> => {
+      const nowIso = new Date().toISOString();
+      const { data, error } = await supabase
+        .from("products")
+        .select(
+          "id,name_fr,name_en,name_de,name_es,price,original_price,discount_percent,stock,image_url,free_shipping,flash_deal_ends_at",
+        )
+        .eq("is_active", true)
+        .gt("discount_percent", 0)
+        .not("flash_deal_ends_at", "is", null)
+        .gt("flash_deal_ends_at", nowIso)
+        .order("flash_deal_ends_at", { ascending: true })
+        .limit(6);
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const deals = expired ? [] : fetchedDeals;
+  const endsAt =
+    deals.length > 0 && deals[0].flash_deal_ends_at ? new Date(deals[0].flash_deal_ends_at) : null;
 
   // Countdown to the earliest active flash_deal_ends_at; hide when expired (no loop)
   useEffect(() => {
     if (!endsAt) return;
+    const target = endsAt.getTime();
     const updateTimer = () => {
-      const diff = endsAt.getTime() - Date.now();
+      const diff = target - Date.now();
       if (diff <= 0) {
         setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-        setDeals([]);
-        setEndsAt(null);
+        setExpired(true);
         return;
       }
       setTimeLeft({
@@ -39,33 +62,8 @@ const FlashDeals = () => {
     updateTimer();
     const interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
-  }, [endsAt]);
+  }, [endsAt?.getTime()]);
 
-  const fetchDeals = async () => {
-    try {
-      const nowIso = new Date().toISOString();
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('is_active', true)
-        .gt('discount_percent', 0)
-        .not('flash_deal_ends_at', 'is', null)
-        .gt('flash_deal_ends_at', nowIso)
-        .order('flash_deal_ends_at', { ascending: true })
-        .limit(6);
-
-      if (error) throw error;
-      const list = data || [];
-      setDeals(list);
-      if (list.length > 0 && (list[0] as any).flash_deal_ends_at) {
-        setEndsAt(new Date((list[0] as any).flash_deal_ends_at));
-      } else {
-        setEndsAt(null);
-      }
-    } catch (error) {
-      console.error('Error fetching deals:', error);
-    }
-  };
 
   const getProductName = (product: any) => {
     switch (language) {
