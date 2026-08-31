@@ -497,8 +497,10 @@ const WriteArticle = () => {
                   value={form.media}
                   onChange={(media) => setForm({ ...form, media })}
                   bucket="article-media"
+                  premiumBucket={form.is_premium ? "article-premium-media" : undefined}
                   label="Médias de l'article"
                   maxItems={10}
+
                 />
               </CardContent>
             </Card>
