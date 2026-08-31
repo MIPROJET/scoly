@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, ExternalLink, Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -20,49 +21,34 @@ interface CarouselItem {
 }
 
 const HeroAdvertisements = () => {
-  const [items, setItems] = useState<CarouselItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
 
-  useEffect(() => {
-    fetchContent();
-  }, []);
-
-  // Auto-scroll with pause on hover
-  useEffect(() => {
-    if (items.length <= 1 || isPaused) return;
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % items.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [items.length, isPaused]);
-
-  const fetchContent = async () => {
-    try {
-      // Fetch advertisements
-      const { data: ads, error: adsError } = await supabase
-        .from("advertisements")
-        .select("id, title, description, media_type, media_url, link_url, link_text, priority")
-        .eq("is_active", true)
-        .order("priority", { ascending: false })
-        .limit(5);
+  const { data: items = [], isLoading: loading } = useQuery({
+    queryKey: ["hero-carousel-items"],
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
+    queryFn: async (): Promise<CarouselItem[]> => {
+      const [{ data: ads, error: adsError }, { data: articles, error: articlesError }] =
+        await Promise.all([
+          supabase
+            .from("advertisements")
+            .select("id, title, description, media_type, media_url, link_url, link_text, priority")
+            .eq("is_active", true)
+            .order("priority", { ascending: false })
+            .limit(5),
+          supabase
+            .from("articles")
+            .select("id, title_fr, excerpt_fr, cover_image, published_at")
+            .eq("status", "published")
+            .order("published_at", { ascending: false })
+            .limit(5),
+        ]);
 
       if (adsError) throw adsError;
-
-      // Fetch published articles
-      const { data: articles, error: articlesError } = await supabase
-        .from("articles")
-        .select("id, title_fr, excerpt_fr, cover_image, published_at")
-        .eq("status", "published")
-        .order("published_at", { ascending: false })
-        .limit(5);
-
       if (articlesError) throw articlesError;
 
-      // Transform and merge
       const adItems: CarouselItem[] = (ads || []).map((ad) => ({
         id: ad.id,
         title: ad.title,
@@ -84,19 +70,27 @@ const HeroAdvertisements = () => {
         link_url: `/actualites/${article.id}`,
         link_text: "Lire l'article",
         type: "article" as const,
-        priority: -index, // Lower priority than ads
+        priority: -index,
       }));
 
-      // Combine and sort by priority (ads first, then articles by date)
-      const combined = [...adItems, ...articleItems].sort((a, b) => b.priority - a.priority);
-      
-      setItems(combined.slice(0, 10)); // Max 10 items
-    } catch (error) {
-      console.error("Error fetching content:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return [...adItems, ...articleItems]
+        .sort((a, b) => b.priority - a.priority)
+        .slice(0, 10);
+    },
+  });
+
+  // Auto-scroll with pause on hover
+  useEffect(() => {
+    if (items.length <= 1 || isPaused) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % items.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [items.length, isPaused]);
+
+
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
