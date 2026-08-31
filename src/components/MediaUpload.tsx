@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Upload, X, Loader2, Image as ImageIcon, Video, GripVertical, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,8 @@ import { toast } from "sonner";
 interface MediaItem {
   url: string;
   type: "image" | "video";
+  /** When set, `url` is a storage path inside this private bucket. */
+  bucket?: string;
 }
 
 interface MediaUploadProps {
@@ -16,6 +18,12 @@ interface MediaUploadProps {
   bucket: string;
   label?: string;
   maxItems?: number;
+  /**
+   * Private bucket used for paid media. When provided, every item except the
+   * cover (index 0) is uploaded there so it cannot be fetched without a
+   * purchase-gated signed URL.
+   */
+  premiumBucket?: string;
 }
 
 export const MediaUpload = ({
@@ -24,10 +32,36 @@ export const MediaUpload = ({
   bucket,
   label = "Médias",
   maxItems = 10,
+  premiumBucket,
 }: MediaUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [signedPreviews, setSignedPreviews] = useState<Record<string, string>>({});
+
+  // Private (premium) items are stored as paths — sign them for the editor preview.
+  useEffect(() => {
+    const pending = value.filter((m) => m.bucket && !signedPreviews[m.url]);
+    if (pending.length === 0) return;
+    let cancelled = false;
+    (async () => {
+      const entries = await Promise.all(
+        pending.map(async (m) => {
+          const { data } = await supabase.storage.from(m.bucket!).createSignedUrl(m.url, 3600);
+          return [m.url, data?.signedUrl ?? ""] as const;
+        }),
+      );
+      if (cancelled) return;
+      setSignedPreviews((prev) => ({ ...prev, ...Object.fromEntries(entries) }));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [value, signedPreviews]);
+
+  const previewSrc = (media: MediaItem) =>
+    media.bucket ? signedPreviews[media.url] || "" : media.url;
+
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
