@@ -1,0 +1,290 @@
+export interface Country {
+  iso: string;
+  name: string;
+  nameEn: string;
+  dial: string;
+  flag: string;
+}
+
+/** Liste complète des pays avec indicatif téléphonique international. */
+export const COUNTRIES: Country[] = [
+  { iso: "AF", name: "Afghanistan", nameEn: "Afghanistan", dial: "+93", flag: "🇦🇫" },
+  { iso: "ZA", name: "Afrique du Sud", nameEn: "South Africa", dial: "+27", flag: "🇿🇦" },
+  { iso: "AL", name: "Albanie", nameEn: "Albania", dial: "+355", flag: "🇦🇱" },
+  { iso: "DZ", name: "Algérie", nameEn: "Algeria", dial: "+213", flag: "🇩🇿" },
+  { iso: "DE", name: "Allemagne", nameEn: "Germany", dial: "+49", flag: "🇩🇪" },
+  { iso: "AD", name: "Andorre", nameEn: "Andorra", dial: "+376", flag: "🇦🇩" },
+  { iso: "AO", name: "Angola", nameEn: "Angola", dial: "+244", flag: "🇦🇴" },
+  { iso: "AI", name: "Anguilla", nameEn: "Anguilla", dial: "+1264", flag: "🇦🇮" },
+  { iso: "AG", name: "Antigua-et-Barbuda", nameEn: "Antigua & Barbuda", dial: "+1268", flag: "🇦🇬" },
+  { iso: "SA", name: "Arabie saoudite", nameEn: "Saudi Arabia", dial: "+966", flag: "🇸🇦" },
+  { iso: "AR", name: "Argentine", nameEn: "Argentina", dial: "+54", flag: "🇦🇷" },
+  { iso: "AM", name: "Arménie", nameEn: "Armenia", dial: "+374", flag: "🇦🇲" },
+  { iso: "AW", name: "Aruba", nameEn: "Aruba", dial: "+297", flag: "🇦🇼" },
+  { iso: "AU", name: "Australie", nameEn: "Australia", dial: "+61", flag: "🇦🇺" },
+  { iso: "AT", name: "Autriche", nameEn: "Austria", dial: "+43", flag: "🇦🇹" },
+  { iso: "AZ", name: "Azerbaïdjan", nameEn: "Azerbaijan", dial: "+994", flag: "🇦🇿" },
+  { iso: "BS", name: "Bahamas", nameEn: "Bahamas", dial: "+1242", flag: "🇧🇸" },
+  { iso: "BH", name: "Bahreïn", nameEn: "Bahrain", dial: "+973", flag: "🇧🇭" },
+  { iso: "BD", name: "Bangladesh", nameEn: "Bangladesh", dial: "+880", flag: "🇧🇩" },
+  { iso: "BB", name: "Barbade", nameEn: "Barbados", dial: "+1246", flag: "🇧🇧" },
+  { iso: "BE", name: "Belgique", nameEn: "Belgium", dial: "+32", flag: "🇧🇪" },
+  { iso: "BZ", name: "Belize", nameEn: "Belize", dial: "+501", flag: "🇧🇿" },
+  { iso: "BJ", name: "Bénin", nameEn: "Benin", dial: "+229", flag: "🇧🇯" },
+  { iso: "BM", name: "Bermudes", nameEn: "Bermuda", dial: "+1441", flag: "🇧🇲" },
+  { iso: "BT", name: "Bhoutan", nameEn: "Bhutan", dial: "+975", flag: "🇧🇹" },
+  { iso: "BY", name: "Biélorussie", nameEn: "Belarus", dial: "+375", flag: "🇧🇾" },
+  { iso: "BO", name: "Bolivie", nameEn: "Bolivia", dial: "+591", flag: "🇧🇴" },
+  { iso: "BA", name: "Bosnie-Herzégovine", nameEn: "Bosnia & Herzegovina", dial: "+387", flag: "🇧🇦" },
+  { iso: "BW", name: "Botswana", nameEn: "Botswana", dial: "+267", flag: "🇧🇼" },
+  { iso: "BR", name: "Brésil", nameEn: "Brazil", dial: "+55", flag: "🇧🇷" },
+  { iso: "BN", name: "Brunei", nameEn: "Brunei", dial: "+673", flag: "🇧🇳" },
+  { iso: "BG", name: "Bulgarie", nameEn: "Bulgaria", dial: "+359", flag: "🇧🇬" },
+  { iso: "BF", name: "Burkina Faso", nameEn: "Burkina Faso", dial: "+226", flag: "🇧🇫" },
+  { iso: "BI", name: "Burundi", nameEn: "Burundi", dial: "+257", flag: "🇧🇮" },
+  { iso: "KH", name: "Cambodge", nameEn: "Cambodia", dial: "+855", flag: "🇰🇭" },
+  { iso: "CM", name: "Cameroun", nameEn: "Cameroon", dial: "+237", flag: "🇨🇲" },
+  { iso: "CA", name: "Canada", nameEn: "Canada", dial: "+1", flag: "🇨🇦" },
+  { iso: "CV", name: "Cap-Vert", nameEn: "Cape Verde", dial: "+238", flag: "🇨🇻" },
+  { iso: "CL", name: "Chili", nameEn: "Chile", dial: "+56", flag: "🇨🇱" },
+  { iso: "CN", name: "Chine", nameEn: "China", dial: "+86", flag: "🇨🇳" },
+  { iso: "CY", name: "Chypre", nameEn: "Cyprus", dial: "+357", flag: "🇨🇾" },
+  { iso: "CO", name: "Colombie", nameEn: "Colombia", dial: "+57", flag: "🇨🇴" },
+  { iso: "KM", name: "Comores", nameEn: "Comoros", dial: "+269", flag: "🇰🇲" },
+  { iso: "CG", name: "Congo-Brazzaville", nameEn: "Congo - Brazzaville", dial: "+242", flag: "🇨🇬" },
+  { iso: "CD", name: "Congo-Kinshasa", nameEn: "Congo - Kinshasa", dial: "+243", flag: "🇨🇩" },
+  { iso: "KP", name: "Corée du Nord", nameEn: "North Korea", dial: "+850", flag: "🇰🇵" },
+  { iso: "KR", name: "Corée du Sud", nameEn: "South Korea", dial: "+82", flag: "🇰🇷" },
+  { iso: "CR", name: "Costa Rica", nameEn: "Costa Rica", dial: "+506", flag: "🇨🇷" },
+  { iso: "CI", name: "Côte d’Ivoire", nameEn: "Côte d’Ivoire", dial: "+225", flag: "🇨🇮" },
+  { iso: "HR", name: "Croatie", nameEn: "Croatia", dial: "+385", flag: "🇭🇷" },
+  { iso: "CU", name: "Cuba", nameEn: "Cuba", dial: "+53", flag: "🇨🇺" },
+  { iso: "CW", name: "Curaçao", nameEn: "Curaçao", dial: "+599", flag: "🇨🇼" },
+  { iso: "DK", name: "Danemark", nameEn: "Denmark", dial: "+45", flag: "🇩🇰" },
+  { iso: "DJ", name: "Djibouti", nameEn: "Djibouti", dial: "+253", flag: "🇩🇯" },
+  { iso: "DM", name: "Dominique", nameEn: "Dominica", dial: "+1767", flag: "🇩🇲" },
+  { iso: "EG", name: "Égypte", nameEn: "Egypt", dial: "+20", flag: "🇪🇬" },
+  { iso: "AE", name: "Émirats arabes unis", nameEn: "United Arab Emirates", dial: "+971", flag: "🇦🇪" },
+  { iso: "EC", name: "Équateur", nameEn: "Ecuador", dial: "+593", flag: "🇪🇨" },
+  { iso: "ER", name: "Érythrée", nameEn: "Eritrea", dial: "+291", flag: "🇪🇷" },
+  { iso: "ES", name: "Espagne", nameEn: "Spain", dial: "+34", flag: "🇪🇸" },
+  { iso: "EE", name: "Estonie", nameEn: "Estonia", dial: "+372", flag: "🇪🇪" },
+  { iso: "SZ", name: "Eswatini", nameEn: "Eswatini", dial: "+268", flag: "🇸🇿" },
+  { iso: "VA", name: "État de la Cité du Vatican", nameEn: "Vatican City", dial: "+39", flag: "🇻🇦" },
+  { iso: "US", name: "États-Unis", nameEn: "United States", dial: "+1", flag: "🇺🇸" },
+  { iso: "ET", name: "Éthiopie", nameEn: "Ethiopia", dial: "+251", flag: "🇪🇹" },
+  { iso: "FJ", name: "Fidji", nameEn: "Fiji", dial: "+679", flag: "🇫🇯" },
+  { iso: "FI", name: "Finlande", nameEn: "Finland", dial: "+358", flag: "🇫🇮" },
+  { iso: "FR", name: "France", nameEn: "France", dial: "+33", flag: "🇫🇷" },
+  { iso: "GA", name: "Gabon", nameEn: "Gabon", dial: "+241", flag: "🇬🇦" },
+  { iso: "GM", name: "Gambie", nameEn: "Gambia", dial: "+220", flag: "🇬🇲" },
+  { iso: "GE", name: "Géorgie", nameEn: "Georgia", dial: "+995", flag: "🇬🇪" },
+  { iso: "GH", name: "Ghana", nameEn: "Ghana", dial: "+233", flag: "🇬🇭" },
+  { iso: "GI", name: "Gibraltar", nameEn: "Gibraltar", dial: "+350", flag: "🇬🇮" },
+  { iso: "GR", name: "Grèce", nameEn: "Greece", dial: "+30", flag: "🇬🇷" },
+  { iso: "GD", name: "Grenade", nameEn: "Grenada", dial: "+1473", flag: "🇬🇩" },
+  { iso: "GL", name: "Groenland", nameEn: "Greenland", dial: "+299", flag: "🇬🇱" },
+  { iso: "GP", name: "Guadeloupe", nameEn: "Guadeloupe", dial: "+590", flag: "🇬🇵" },
+  { iso: "GU", name: "Guam", nameEn: "Guam", dial: "+1671", flag: "🇬🇺" },
+  { iso: "GT", name: "Guatemala", nameEn: "Guatemala", dial: "+502", flag: "🇬🇹" },
+  { iso: "GN", name: "Guinée", nameEn: "Guinea", dial: "+224", flag: "🇬🇳" },
+  { iso: "GQ", name: "Guinée équatoriale", nameEn: "Equatorial Guinea", dial: "+240", flag: "🇬🇶" },
+  { iso: "GW", name: "Guinée-Bissau", nameEn: "Guinea-Bissau", dial: "+245", flag: "🇬🇼" },
+  { iso: "GY", name: "Guyana", nameEn: "Guyana", dial: "+592", flag: "🇬🇾" },
+  { iso: "GF", name: "Guyane française", nameEn: "French Guiana", dial: "+594", flag: "🇬🇫" },
+  { iso: "HT", name: "Haïti", nameEn: "Haiti", dial: "+509", flag: "🇭🇹" },
+  { iso: "HN", name: "Honduras", nameEn: "Honduras", dial: "+504", flag: "🇭🇳" },
+  { iso: "HU", name: "Hongrie", nameEn: "Hungary", dial: "+36", flag: "🇭🇺" },
+  { iso: "KY", name: "Îles Caïmans", nameEn: "Cayman Islands", dial: "+1345", flag: "🇰🇾" },
+  { iso: "CK", name: "Îles Cook", nameEn: "Cook Islands", dial: "+682", flag: "🇨🇰" },
+  { iso: "FO", name: "Îles Féroé", nameEn: "Faroe Islands", dial: "+298", flag: "🇫🇴" },
+  { iso: "FK", name: "Îles Malouines", nameEn: "Falkland Islands", dial: "+500", flag: "🇫🇰" },
+  { iso: "MP", name: "Îles Mariannes du Nord", nameEn: "Northern Mariana Islands", dial: "+1670", flag: "🇲🇵" },
+  { iso: "MH", name: "Îles Marshall", nameEn: "Marshall Islands", dial: "+692", flag: "🇲🇭" },
+  { iso: "SB", name: "Îles Salomon", nameEn: "Solomon Islands", dial: "+677", flag: "🇸🇧" },
+  { iso: "TC", name: "Îles Turques-et-Caïques", nameEn: "Turks & Caicos Islands", dial: "+1649", flag: "🇹🇨" },
+  { iso: "VG", name: "Îles Vierges britanniques", nameEn: "British Virgin Islands", dial: "+1284", flag: "🇻🇬" },
+  { iso: "IN", name: "Inde", nameEn: "India", dial: "+91", flag: "🇮🇳" },
+  { iso: "ID", name: "Indonésie", nameEn: "Indonesia", dial: "+62", flag: "🇮🇩" },
+  { iso: "IQ", name: "Irak", nameEn: "Iraq", dial: "+964", flag: "🇮🇶" },
+  { iso: "IR", name: "Iran", nameEn: "Iran", dial: "+98", flag: "🇮🇷" },
+  { iso: "IE", name: "Irlande", nameEn: "Ireland", dial: "+353", flag: "🇮🇪" },
+  { iso: "IS", name: "Islande", nameEn: "Iceland", dial: "+354", flag: "🇮🇸" },
+  { iso: "IL", name: "Israël", nameEn: "Israel", dial: "+972", flag: "🇮🇱" },
+  { iso: "IT", name: "Italie", nameEn: "Italy", dial: "+39", flag: "🇮🇹" },
+  { iso: "JM", name: "Jamaïque", nameEn: "Jamaica", dial: "+1876", flag: "🇯🇲" },
+  { iso: "JP", name: "Japon", nameEn: "Japan", dial: "+81", flag: "🇯🇵" },
+  { iso: "JO", name: "Jordanie", nameEn: "Jordan", dial: "+962", flag: "🇯🇴" },
+  { iso: "KZ", name: "Kazakhstan", nameEn: "Kazakhstan", dial: "+7", flag: "🇰🇿" },
+  { iso: "KE", name: "Kenya", nameEn: "Kenya", dial: "+254", flag: "🇰🇪" },
+  { iso: "KG", name: "Kirghizstan", nameEn: "Kyrgyzstan", dial: "+996", flag: "🇰🇬" },
+  { iso: "KI", name: "Kiribati", nameEn: "Kiribati", dial: "+686", flag: "🇰🇮" },
+  { iso: "KW", name: "Koweït", nameEn: "Kuwait", dial: "+965", flag: "🇰🇼" },
+  { iso: "RE", name: "La Réunion", nameEn: "Réunion", dial: "+262", flag: "🇷🇪" },
+  { iso: "LA", name: "Laos", nameEn: "Laos", dial: "+856", flag: "🇱🇦" },
+  { iso: "LS", name: "Lesotho", nameEn: "Lesotho", dial: "+266", flag: "🇱🇸" },
+  { iso: "LV", name: "Lettonie", nameEn: "Latvia", dial: "+371", flag: "🇱🇻" },
+  { iso: "LB", name: "Liban", nameEn: "Lebanon", dial: "+961", flag: "🇱🇧" },
+  { iso: "LR", name: "Liberia", nameEn: "Liberia", dial: "+231", flag: "🇱🇷" },
+  { iso: "LY", name: "Libye", nameEn: "Libya", dial: "+218", flag: "🇱🇾" },
+  { iso: "LI", name: "Liechtenstein", nameEn: "Liechtenstein", dial: "+423", flag: "🇱🇮" },
+  { iso: "LT", name: "Lituanie", nameEn: "Lithuania", dial: "+370", flag: "🇱🇹" },
+  { iso: "LU", name: "Luxembourg", nameEn: "Luxembourg", dial: "+352", flag: "🇱🇺" },
+  { iso: "MK", name: "Macédoine du Nord", nameEn: "North Macedonia", dial: "+389", flag: "🇲🇰" },
+  { iso: "MG", name: "Madagascar", nameEn: "Madagascar", dial: "+261", flag: "🇲🇬" },
+  { iso: "MY", name: "Malaisie", nameEn: "Malaysia", dial: "+60", flag: "🇲🇾" },
+  { iso: "MW", name: "Malawi", nameEn: "Malawi", dial: "+265", flag: "🇲🇼" },
+  { iso: "MV", name: "Maldives", nameEn: "Maldives", dial: "+960", flag: "🇲🇻" },
+  { iso: "ML", name: "Mali", nameEn: "Mali", dial: "+223", flag: "🇲🇱" },
+  { iso: "MT", name: "Malte", nameEn: "Malta", dial: "+356", flag: "🇲🇹" },
+  { iso: "MA", name: "Maroc", nameEn: "Morocco", dial: "+212", flag: "🇲🇦" },
+  { iso: "MQ", name: "Martinique", nameEn: "Martinique", dial: "+596", flag: "🇲🇶" },
+  { iso: "MU", name: "Maurice", nameEn: "Mauritius", dial: "+230", flag: "🇲🇺" },
+  { iso: "MR", name: "Mauritanie", nameEn: "Mauritania", dial: "+222", flag: "🇲🇷" },
+  { iso: "YT", name: "Mayotte", nameEn: "Mayotte", dial: "+262", flag: "🇾🇹" },
+  { iso: "MX", name: "Mexique", nameEn: "Mexico", dial: "+52", flag: "🇲🇽" },
+  { iso: "FM", name: "Micronésie", nameEn: "Micronesia", dial: "+691", flag: "🇫🇲" },
+  { iso: "MD", name: "Moldavie", nameEn: "Moldova", dial: "+373", flag: "🇲🇩" },
+  { iso: "MC", name: "Monaco", nameEn: "Monaco", dial: "+377", flag: "🇲🇨" },
+  { iso: "MN", name: "Mongolie", nameEn: "Mongolia", dial: "+976", flag: "🇲🇳" },
+  { iso: "ME", name: "Monténégro", nameEn: "Montenegro", dial: "+382", flag: "🇲🇪" },
+  { iso: "MS", name: "Montserrat", nameEn: "Montserrat", dial: "+1664", flag: "🇲🇸" },
+  { iso: "MZ", name: "Mozambique", nameEn: "Mozambique", dial: "+258", flag: "🇲🇿" },
+  { iso: "MM", name: "Myanmar (Birmanie)", nameEn: "Myanmar (Burma)", dial: "+95", flag: "🇲🇲" },
+  { iso: "NA", name: "Namibie", nameEn: "Namibia", dial: "+264", flag: "🇳🇦" },
+  { iso: "NR", name: "Nauru", nameEn: "Nauru", dial: "+674", flag: "🇳🇷" },
+  { iso: "NP", name: "Népal", nameEn: "Nepal", dial: "+977", flag: "🇳🇵" },
+  { iso: "NI", name: "Nicaragua", nameEn: "Nicaragua", dial: "+505", flag: "🇳🇮" },
+  { iso: "NE", name: "Niger", nameEn: "Niger", dial: "+227", flag: "🇳🇪" },
+  { iso: "NG", name: "Nigeria", nameEn: "Nigeria", dial: "+234", flag: "🇳🇬" },
+  { iso: "NU", name: "Niue", nameEn: "Niue", dial: "+683", flag: "🇳🇺" },
+  { iso: "NO", name: "Norvège", nameEn: "Norway", dial: "+47", flag: "🇳🇴" },
+  { iso: "NC", name: "Nouvelle-Calédonie", nameEn: "New Caledonia", dial: "+687", flag: "🇳🇨" },
+  { iso: "NZ", name: "Nouvelle-Zélande", nameEn: "New Zealand", dial: "+64", flag: "🇳🇿" },
+  { iso: "OM", name: "Oman", nameEn: "Oman", dial: "+968", flag: "🇴🇲" },
+  { iso: "UG", name: "Ouganda", nameEn: "Uganda", dial: "+256", flag: "🇺🇬" },
+  { iso: "UZ", name: "Ouzbékistan", nameEn: "Uzbekistan", dial: "+998", flag: "🇺🇿" },
+  { iso: "PK", name: "Pakistan", nameEn: "Pakistan", dial: "+92", flag: "🇵🇰" },
+  { iso: "PW", name: "Palaos", nameEn: "Palau", dial: "+680", flag: "🇵🇼" },
+  { iso: "PA", name: "Panama", nameEn: "Panama", dial: "+507", flag: "🇵🇦" },
+  { iso: "PG", name: "Papouasie-Nouvelle-Guinée", nameEn: "Papua New Guinea", dial: "+675", flag: "🇵🇬" },
+  { iso: "PY", name: "Paraguay", nameEn: "Paraguay", dial: "+595", flag: "🇵🇾" },
+  { iso: "NL", name: "Pays-Bas", nameEn: "Netherlands", dial: "+31", flag: "🇳🇱" },
+  { iso: "PE", name: "Pérou", nameEn: "Peru", dial: "+51", flag: "🇵🇪" },
+  { iso: "PH", name: "Philippines", nameEn: "Philippines", dial: "+63", flag: "🇵🇭" },
+  { iso: "PL", name: "Pologne", nameEn: "Poland", dial: "+48", flag: "🇵🇱" },
+  { iso: "PF", name: "Polynésie française", nameEn: "French Polynesia", dial: "+689", flag: "🇵🇫" },
+  { iso: "PR", name: "Porto Rico", nameEn: "Puerto Rico", dial: "+1787", flag: "🇵🇷" },
+  { iso: "PT", name: "Portugal", nameEn: "Portugal", dial: "+351", flag: "🇵🇹" },
+  { iso: "QA", name: "Qatar", nameEn: "Qatar", dial: "+974", flag: "🇶🇦" },
+  { iso: "HK", name: "R.A.S. chinoise de Hong Kong", nameEn: "Hong Kong SAR China", dial: "+852", flag: "🇭🇰" },
+  { iso: "MO", name: "R.A.S. chinoise de Macao", nameEn: "Macao SAR China", dial: "+853", flag: "🇲🇴" },
+  { iso: "CF", name: "République centrafricaine", nameEn: "Central African Republic", dial: "+236", flag: "🇨🇫" },
+  { iso: "DO", name: "République dominicaine", nameEn: "Dominican Republic", dial: "+1809", flag: "🇩🇴" },
+  { iso: "RO", name: "Roumanie", nameEn: "Romania", dial: "+40", flag: "🇷🇴" },
+  { iso: "GB", name: "Royaume-Uni", nameEn: "United Kingdom", dial: "+44", flag: "🇬🇧" },
+  { iso: "RU", name: "Russie", nameEn: "Russia", dial: "+7", flag: "🇷🇺" },
+  { iso: "RW", name: "Rwanda", nameEn: "Rwanda", dial: "+250", flag: "🇷🇼" },
+  { iso: "EH", name: "Sahara occidental", nameEn: "Western Sahara", dial: "+212", flag: "🇪🇭" },
+  { iso: "BL", name: "Saint-Barthélemy", nameEn: "St. Barthélemy", dial: "+590", flag: "🇧🇱" },
+  { iso: "KN", name: "Saint-Christophe-et-Niévès", nameEn: "St. Kitts & Nevis", dial: "+1869", flag: "🇰🇳" },
+  { iso: "SM", name: "Saint-Marin", nameEn: "San Marino", dial: "+378", flag: "🇸🇲" },
+  { iso: "MF", name: "Saint-Martin", nameEn: "St. Martin", dial: "+590", flag: "🇲🇫" },
+  { iso: "SX", name: "Saint-Martin (partie néerlandaise)", nameEn: "Sint Maarten", dial: "+1721", flag: "🇸🇽" },
+  { iso: "PM", name: "Saint-Pierre-et-Miquelon", nameEn: "St. Pierre & Miquelon", dial: "+508", flag: "🇵🇲" },
+  { iso: "VC", name: "Saint-Vincent-et-les Grenadines", nameEn: "St. Vincent & Grenadines", dial: "+1784", flag: "🇻🇨" },
+  { iso: "SH", name: "Sainte-Hélène", nameEn: "St. Helena", dial: "+290", flag: "🇸🇭" },
+  { iso: "LC", name: "Sainte-Lucie", nameEn: "St. Lucia", dial: "+1758", flag: "🇱🇨" },
+  { iso: "SV", name: "Salvador", nameEn: "El Salvador", dial: "+503", flag: "🇸🇻" },
+  { iso: "WS", name: "Samoa", nameEn: "Samoa", dial: "+685", flag: "🇼🇸" },
+  { iso: "AS", name: "Samoa américaines", nameEn: "American Samoa", dial: "+1684", flag: "🇦🇸" },
+  { iso: "ST", name: "Sao Tomé-et-Principe", nameEn: "São Tomé & Príncipe", dial: "+239", flag: "🇸🇹" },
+  { iso: "SN", name: "Sénégal", nameEn: "Senegal", dial: "+221", flag: "🇸🇳" },
+  { iso: "RS", name: "Serbie", nameEn: "Serbia", dial: "+381", flag: "🇷🇸" },
+  { iso: "SC", name: "Seychelles", nameEn: "Seychelles", dial: "+248", flag: "🇸🇨" },
+  { iso: "SL", name: "Sierra Leone", nameEn: "Sierra Leone", dial: "+232", flag: "🇸🇱" },
+  { iso: "SG", name: "Singapour", nameEn: "Singapore", dial: "+65", flag: "🇸🇬" },
+  { iso: "SK", name: "Slovaquie", nameEn: "Slovakia", dial: "+421", flag: "🇸🇰" },
+  { iso: "SI", name: "Slovénie", nameEn: "Slovenia", dial: "+386", flag: "🇸🇮" },
+  { iso: "SO", name: "Somalie", nameEn: "Somalia", dial: "+252", flag: "🇸🇴" },
+  { iso: "SD", name: "Soudan", nameEn: "Sudan", dial: "+249", flag: "🇸🇩" },
+  { iso: "SS", name: "Soudan du Sud", nameEn: "South Sudan", dial: "+211", flag: "🇸🇸" },
+  { iso: "LK", name: "Sri Lanka", nameEn: "Sri Lanka", dial: "+94", flag: "🇱🇰" },
+  { iso: "SE", name: "Suède", nameEn: "Sweden", dial: "+46", flag: "🇸🇪" },
+  { iso: "CH", name: "Suisse", nameEn: "Switzerland", dial: "+41", flag: "🇨🇭" },
+  { iso: "SR", name: "Suriname", nameEn: "Suriname", dial: "+597", flag: "🇸🇷" },
+  { iso: "SY", name: "Syrie", nameEn: "Syria", dial: "+963", flag: "🇸🇾" },
+  { iso: "TJ", name: "Tadjikistan", nameEn: "Tajikistan", dial: "+992", flag: "🇹🇯" },
+  { iso: "TW", name: "Taïwan", nameEn: "Taiwan", dial: "+886", flag: "🇹🇼" },
+  { iso: "TZ", name: "Tanzanie", nameEn: "Tanzania", dial: "+255", flag: "🇹🇿" },
+  { iso: "TD", name: "Tchad", nameEn: "Chad", dial: "+235", flag: "🇹🇩" },
+  { iso: "CZ", name: "Tchéquie", nameEn: "Czechia", dial: "+420", flag: "🇨🇿" },
+  { iso: "IO", name: "Territoire britannique de l’océan Indien", nameEn: "British Indian Ocean Territory", dial: "+246", flag: "🇮🇴" },
+  { iso: "PS", name: "Territoires palestiniens", nameEn: "Palestinian Territories", dial: "+970", flag: "🇵🇸" },
+  { iso: "TH", name: "Thaïlande", nameEn: "Thailand", dial: "+66", flag: "🇹🇭" },
+  { iso: "TL", name: "Timor oriental", nameEn: "Timor-Leste", dial: "+670", flag: "🇹🇱" },
+  { iso: "TG", name: "Togo", nameEn: "Togo", dial: "+228", flag: "🇹🇬" },
+  { iso: "TK", name: "Tokelau", nameEn: "Tokelau", dial: "+690", flag: "🇹🇰" },
+  { iso: "TO", name: "Tonga", nameEn: "Tonga", dial: "+676", flag: "🇹🇴" },
+  { iso: "TT", name: "Trinité-et-Tobago", nameEn: "Trinidad & Tobago", dial: "+1868", flag: "🇹🇹" },
+  { iso: "TN", name: "Tunisie", nameEn: "Tunisia", dial: "+216", flag: "🇹🇳" },
+  { iso: "TM", name: "Turkménistan", nameEn: "Turkmenistan", dial: "+993", flag: "🇹🇲" },
+  { iso: "TR", name: "Turquie", nameEn: "Türkiye", dial: "+90", flag: "🇹🇷" },
+  { iso: "TV", name: "Tuvalu", nameEn: "Tuvalu", dial: "+688", flag: "🇹🇻" },
+  { iso: "UA", name: "Ukraine", nameEn: "Ukraine", dial: "+380", flag: "🇺🇦" },
+  { iso: "UY", name: "Uruguay", nameEn: "Uruguay", dial: "+598", flag: "🇺🇾" },
+  { iso: "VU", name: "Vanuatu", nameEn: "Vanuatu", dial: "+678", flag: "🇻🇺" },
+  { iso: "VE", name: "Venezuela", nameEn: "Venezuela", dial: "+58", flag: "🇻🇪" },
+  { iso: "VN", name: "Viêt Nam", nameEn: "Vietnam", dial: "+84", flag: "🇻🇳" },
+  { iso: "WF", name: "Wallis-et-Futuna", nameEn: "Wallis & Futuna", dial: "+681", flag: "🇼🇫" },
+  { iso: "YE", name: "Yémen", nameEn: "Yemen", dial: "+967", flag: "🇾🇪" },
+  { iso: "ZM", name: "Zambie", nameEn: "Zambia", dial: "+260", flag: "🇿🇲" },
+  { iso: "ZW", name: "Zimbabwe", nameEn: "Zimbabwe", dial: "+263", flag: "🇿🇼" },
+];
+
+/** Zone UEMOA : ces indicatifs reçoivent des SMS, les autres passent en WhatsApp. */
+export const UEMOA_ISO = ["BJ", "BF", "CI", "GW", "ML", "NE", "SN", "TG"] as const;
+export const UEMOA_DIAL_CODES = ["+229", "+226", "+225", "+245", "+223", "+227", "+221", "+228"];
+
+export const DEFAULT_COUNTRY_ISO = "CI";
+
+export function findCountryByIso(iso: string): Country | undefined {
+  return COUNTRIES.find((c) => c.iso === iso.toUpperCase());
+}
+
+/** Détecte le pays à partir d'un numéro au format international (+225...). */
+export function findCountryByPhone(phone: string): Country | undefined {
+  const cleaned = phone.replace(/[^\d+]/g, "");
+  if (!cleaned.startsWith("+")) return undefined;
+  const matches = COUNTRIES.filter((c) => cleaned.startsWith(c.dial));
+  return matches.sort((a, b) => b.dial.length - a.dial.length)[0];
+}
+
+/** Recherche multicritère : nom, nom anglais, indicatif ou code ISO. */
+export function searchCountries(query: string): Country[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return COUNTRIES;
+  const normalize = (s: string) =>
+    s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const nq = normalize(q);
+  return COUNTRIES.filter(
+    (c) =>
+      normalize(c.name).includes(nq) ||
+      normalize(c.nameEn).includes(nq) ||
+      c.dial.includes(q.replace(/^00/, "+")) ||
+      c.dial.replace("+", "").startsWith(q.replace(/[^\d]/g, "")) && q.replace(/[^\d]/g, "") !== "" ||
+      c.iso.toLowerCase() === nq,
+  );
+}
+
+/** Numéro E.164 : indicatif + numéro local sans zéro initial. */
+export function toE164(dial: string, local: string): string {
+  const digits = local.replace(/\D/g, "").replace(/^0+/, "");
+  return `${dial}${digits}`;
+}
+
+export function isUemoaPhone(phone: string): boolean {
+  const cleaned = phone.replace(/[^\d+]/g, "");
+  return UEMOA_DIAL_CODES.some((d) => cleaned.startsWith(d));
+}
+
