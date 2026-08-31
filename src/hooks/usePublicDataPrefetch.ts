@@ -25,11 +25,11 @@ export const usePublicDataPrefetch = () => {
           const { data } = await supabase
             .from("products")
             .select(
-              "id,name_fr,name_en,name_de,name_es,description_fr,description_en,description_de,description_es,price,original_price,discount_percent,stock,image_url,is_featured,category_id,free_shipping,brand,author_details,metadata,views,created_at",
+              "id,name_fr,name_en,name_de,name_es,price,original_price,discount_percent,stock,image_url,images,is_featured,category_id,free_shipping,brand,author_details,metadata,views,created_at",
             )
             .eq("is_active", true)
             .order("created_at", { ascending: false })
-            .range(0, 1999);
+            .range(0, 999);
           return data || [];
         },
       });
