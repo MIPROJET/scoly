@@ -150,10 +150,13 @@ const WriteArticle = () => {
         let mediaItems: MediaItem[] = [];
         if (data.media && Array.isArray(data.media)) {
           mediaItems = (data.media as unknown as MediaItem[]).map((item: any) => ({
-            url: item.url || "", type: item.type === "video" ? "video" : "image",
+            url: item.url || "",
+            type: item.type === "video" ? "video" : "image",
+            ...(item.bucket ? { bucket: item.bucket as string } : {}),
           }));
         } else if (data.cover_image) {
           mediaItems = [{ url: data.cover_image, type: "image" }];
+
         }
         let premium = { fr: "", en: "", de: "", es: "" };
         if (data.is_premium) {
