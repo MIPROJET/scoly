@@ -24,7 +24,10 @@ import { cn } from "@/lib/utils";
 interface MediaItem {
   url: string;
   type: "image" | "video";
+  /** When set, `url` is a storage path inside this private (paid) bucket. */
+  bucket?: string;
 }
+
 
 type GenerationMode = "single_image" | "video" | "image_video" | "multi_image" | "text_only";
 
@@ -147,10 +150,13 @@ const WriteArticle = () => {
         let mediaItems: MediaItem[] = [];
         if (data.media && Array.isArray(data.media)) {
           mediaItems = (data.media as unknown as MediaItem[]).map((item: any) => ({
-            url: item.url || "", type: item.type === "video" ? "video" : "image",
+            url: item.url || "",
+            type: item.type === "video" ? "video" : "image",
+            ...(item.bucket ? { bucket: item.bucket as string } : {}),
           }));
         } else if (data.cover_image) {
           mediaItems = [{ url: data.cover_image, type: "image" }];
+
         }
         let premium = { fr: "", en: "", de: "", es: "" };
         if (data.is_premium) {
@@ -281,11 +287,22 @@ const WriteArticle = () => {
     setLoading(true);
     try {
       // Guardrail: never store heavy base64 blobs in the DB. Upload to Storage.
+      // Private (paid) items already hold a storage path — leave them untouched.
       const processedMedia = await Promise.all(
-        form.media.map(async (item) => ({ url: await ensureStorageUrl(item.url, user.id), type: item.type }))
+        form.media.map(async (item) =>
+          item.bucket
+            ? { url: item.url, type: item.type, bucket: item.bucket }
+            : { url: await ensureStorageUrl(item.url, user.id), type: item.type },
+        )
       );
-      const coverImage = processedMedia.length > 0 ? processedMedia[0].url : null;
-      const mediaJson = processedMedia.map(item => ({ url: item.url, type: item.type }));
+      const cover = processedMedia.find((item) => !("bucket" in item && item.bucket));
+      const coverImage = cover ? cover.url : null;
+      const mediaJson = processedMedia.map(item => ({
+        url: item.url,
+        type: item.type,
+        ...(("bucket" in item && item.bucket) ? { bucket: item.bucket } : {}),
+      }));
+
 
 
       const articleData = {
@@ -480,8 +497,10 @@ const WriteArticle = () => {
                   value={form.media}
                   onChange={(media) => setForm({ ...form, media })}
                   bucket="article-media"
+                  premiumBucket={form.is_premium ? "article-premium-media" : undefined}
                   label="Médias de l'article"
                   maxItems={10}
+
                 />
               </CardContent>
             </Card>

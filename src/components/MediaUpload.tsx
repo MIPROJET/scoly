@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Upload, X, Loader2, Image as ImageIcon, Video, GripVertical, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,8 @@ import { toast } from "sonner";
 interface MediaItem {
   url: string;
   type: "image" | "video";
+  /** When set, `url` is a storage path inside this private bucket. */
+  bucket?: string;
 }
 
 interface MediaUploadProps {
@@ -16,6 +18,12 @@ interface MediaUploadProps {
   bucket: string;
   label?: string;
   maxItems?: number;
+  /**
+   * Private bucket used for paid media. When provided, every item except the
+   * cover (index 0) is uploaded there so it cannot be fetched without a
+   * purchase-gated signed URL.
+   */
+  premiumBucket?: string;
 }
 
 export const MediaUpload = ({
@@ -24,10 +32,36 @@ export const MediaUpload = ({
   bucket,
   label = "Médias",
   maxItems = 10,
+  premiumBucket,
 }: MediaUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [signedPreviews, setSignedPreviews] = useState<Record<string, string>>({});
+
+  // Private (premium) items are stored as paths — sign them for the editor preview.
+  useEffect(() => {
+    const pending = value.filter((m) => m.bucket && !signedPreviews[m.url]);
+    if (pending.length === 0) return;
+    let cancelled = false;
+    (async () => {
+      const entries = await Promise.all(
+        pending.map(async (m) => {
+          const { data } = await supabase.storage.from(m.bucket!).createSignedUrl(m.url, 3600);
+          return [m.url, data?.signedUrl ?? ""] as const;
+        }),
+      );
+      if (cancelled) return;
+      setSignedPreviews((prev) => ({ ...prev, ...Object.fromEntries(entries) }));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [value, signedPreviews]);
+
+  const previewSrc = (media: MediaItem) =>
+    media.bucket ? signedPreviews[media.url] || "" : media.url;
+
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -63,8 +97,14 @@ export const MediaUpload = ({
         const folder = isVideo ? "videos" : "images";
         const filePath = `${folder}/${fileName}`;
 
+        // Cover (index 0) stays public so listings can show a thumbnail.
+        // Everything else on a paid article goes to the private bucket.
+        const targetIndex = value.length + newMedia.length;
+        const isPrivate = Boolean(premiumBucket) && targetIndex > 0;
+        const targetBucket = isPrivate ? premiumBucket! : bucket;
+
         const { error: uploadError } = await supabase.storage
-          .from(bucket)
+          .from(targetBucket)
           .upload(filePath, file, {
             cacheControl: "3600",
             upsert: false,
@@ -72,8 +112,8 @@ export const MediaUpload = ({
 
         if (uploadError) {
           console.error("Upload error:", uploadError);
-          // Fallback to base64 for images only
-          if (isImage) {
+          // Fallback to base64 for images only (never for paid media)
+          if (isImage && !isPrivate) {
             const reader = new FileReader();
             const base64Url = await new Promise<string>((resolve) => {
               reader.onloadend = () => resolve(reader.result as string);
@@ -86,14 +126,24 @@ export const MediaUpload = ({
           continue;
         }
 
+        if (isPrivate) {
+          newMedia.push({
+            url: filePath,
+            type: isVideo ? "video" : "image",
+            bucket: targetBucket,
+          });
+          continue;
+        }
+
         const { data: { publicUrl } } = supabase.storage
-          .from(bucket)
+          .from(targetBucket)
           .getPublicUrl(filePath);
 
         newMedia.push({
           url: publicUrl,
           type: isVideo ? "video" : "image",
         });
+
       }
 
       if (newMedia.length > 0) {
@@ -155,14 +205,14 @@ export const MediaUpload = ({
             >
               {media.type === "video" ? (
                 <video
-                  src={media.url}
+                  src={previewSrc(media)}
                   className="w-full h-full object-cover"
                   muted
                   playsInline
                 />
               ) : (
                 <img
-                  src={media.url}
+                  src={previewSrc(media) || "/placeholder.svg"}
                   alt=""
                   className="w-full h-full object-cover"
                   onError={(e) => {
@@ -170,6 +220,7 @@ export const MediaUpload = ({
                   }}
                 />
               )}
+
               
               {/* Overlay with icons */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">

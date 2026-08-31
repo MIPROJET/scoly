@@ -35,7 +35,10 @@ import { toast } from "sonner";
 interface MediaItem {
   url: string;
   type: "image" | "video";
+  /** Paid media: `url` is a private storage path resolved via a signed URL. */
+  bucket?: string;
 }
+
 
 interface Article {
   id: string;
@@ -136,6 +139,34 @@ const ArticleDetail = () => {
     }
   }, [user, article]);
 
+  // Paid media lives in a private bucket: ask the backend for short-lived
+  // signed URLs, which it only issues to buyers, the author and staff.
+  const [premiumMediaUrls, setPremiumMediaUrls] = useState<Record<string, string>>({});
+  useEffect(() => {
+    const paths = (article?.media ?? []).filter((m) => m.bucket).map((m) => m.url);
+    if (!user || !article || paths.length === 0) {
+      setPremiumMediaUrls({});
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.functions.invoke('get-article-media', {
+        body: { articleId: article.id },
+      });
+      if (cancelled || error || !data?.urls) return;
+      setPremiumMediaUrls(data.urls as Record<string, string>);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, article?.id, article?.media]);
+
+  const visibleMedia = (article?.media ?? [])
+    .map((m) => (m.bucket ? { ...m, url: premiumMediaUrls[m.url] || "" } : m))
+    .filter((m) => !!m.url);
+
+
+
   const fetchArticle = async () => {
     if (!id) return;
     
@@ -151,15 +182,18 @@ const ArticleDetail = () => {
 
       if (articleError) throw articleError;
       
-      // Parse media from JSON
+      // Parse media from JSON. Paid media keeps its private bucket marker and is
+      // only rendered once a purchase-gated signed URL has been obtained.
       const parsedArticle = {
         ...articleData,
         media: articleData.media ? (articleData.media as unknown as MediaItem[]).map((item: any) => ({
           url: item?.url || "",
           type: item?.type === "video" ? "video" : "image" as const,
+          ...(item?.bucket ? { bucket: String(item.bucket) } : {}),
         })) : undefined,
       };
       setArticle(parsedArticle as Article);
+
 
       // Fetch author
       if (articleData?.author_id) {
@@ -570,23 +604,23 @@ const ArticleDetail = () => {
           </header>
 
           {/* Cover Image / Media Gallery */}
-          {article.media && article.media.length > 0 ? (
+          {visibleMedia && visibleMedia.length > 0 ? (
             <div className="mb-8 space-y-4">
               {/* Main image/video - clickable for lightbox */}
               <div 
                 className="aspect-video bg-muted rounded-xl overflow-hidden cursor-pointer relative group"
                 onClick={() => { setLightboxIndex(0); setLightboxOpen(true); }}
               >
-                {article.media[0].type === "video" ? (
+                {visibleMedia[0].type === "video" ? (
                   <video
-                    src={article.media[0].url}
+                    src={visibleMedia[0].url}
                     className="w-full h-full object-cover"
                     muted
                     playsInline
                   />
                 ) : (
                   <SmartImage
-                    src={article.media[0].url}
+                    src={visibleMedia[0].url}
                     alt={getTitle()}
                     className="w-full h-full object-cover"
                     fallbackSrc="/placeholder.svg"
@@ -601,9 +635,9 @@ const ArticleDetail = () => {
               </div>
               
               {/* Thumbnails - clickable */}
-              {article.media.length > 1 && (
+              {visibleMedia.length > 1 && (
                 <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                  {article.media.slice(1).map((media, idx) => (
+                  {visibleMedia.slice(1).map((media, idx) => (
                     <div 
                       key={idx} 
                       className="aspect-video bg-muted rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary transition-all"
@@ -631,7 +665,7 @@ const ArticleDetail = () => {
               
               {/* Lightbox */}
               <MediaLightbox
-                media={article.media}
+                media={visibleMedia}
                 initialIndex={lightboxIndex}
                 isOpen={lightboxOpen}
                 onClose={() => setLightboxOpen(false)}
