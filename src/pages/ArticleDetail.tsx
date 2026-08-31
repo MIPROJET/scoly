@@ -139,6 +139,34 @@ const ArticleDetail = () => {
     }
   }, [user, article]);
 
+  // Paid media lives in a private bucket: ask the backend for short-lived
+  // signed URLs, which it only issues to buyers, the author and staff.
+  const [premiumMediaUrls, setPremiumMediaUrls] = useState<Record<string, string>>({});
+  useEffect(() => {
+    const paths = (article?.media ?? []).filter((m) => m.bucket).map((m) => m.url);
+    if (!user || !article || paths.length === 0) {
+      setPremiumMediaUrls({});
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.functions.invoke('get-article-media', {
+        body: { articleId: article.id },
+      });
+      if (cancelled || error || !data?.urls) return;
+      setPremiumMediaUrls(data.urls as Record<string, string>);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, article?.id, article?.media]);
+
+  const visibleMedia = (article?.media ?? [])
+    .map((m) => (m.bucket ? { ...m, url: premiumMediaUrls[m.url] || "" } : m))
+    .filter((m) => !!m.url);
+
+
+
   const fetchArticle = async () => {
     if (!id) return;
     
