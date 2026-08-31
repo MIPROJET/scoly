@@ -154,15 +154,18 @@ const ArticleDetail = () => {
 
       if (articleError) throw articleError;
       
-      // Parse media from JSON
+      // Parse media from JSON. Paid media keeps its private bucket marker and is
+      // only rendered once a purchase-gated signed URL has been obtained.
       const parsedArticle = {
         ...articleData,
         media: articleData.media ? (articleData.media as unknown as MediaItem[]).map((item: any) => ({
           url: item?.url || "",
           type: item?.type === "video" ? "video" : "image" as const,
+          ...(item?.bucket ? { bucket: String(item.bucket) } : {}),
         })) : undefined,
       };
       setArticle(parsedArticle as Article);
+
 
       // Fetch author
       if (articleData?.author_id) {
