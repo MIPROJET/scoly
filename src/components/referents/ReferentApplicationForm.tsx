@@ -102,21 +102,11 @@ const ReferentApplicationForm = ({ mode, onSubmitted }: Props) => {
     }
     setSaving(true);
     try {
-      let assignedCommercial: string | null = mode === "referent" ? user.id : null;
-
-      // Filleul : routage automatique vers un commercial disponible de la zone
-      if (mode === "filleul" && zoneId) {
-        const { data } = await supabase.rpc("pick_available_commercial", {
-          _zone_id: zoneId,
-        });
-        assignedCommercial = (data as string | null) ?? null;
-      }
-
+      // Les champs d'affectation (parrain, commercial assigné, statut) sont
+      // imposés côté serveur par un trigger de sécurité.
       const { error } = await supabase.from("referent_applications").insert({
         submitted_by: user.id,
         submitted_role: mode === "referent" ? "commercial" : "referent",
-        sponsor_referent_id: mode === "filleul" ? user.id : null,
-        assigned_commercial_id: assignedCommercial,
         zone_id: zoneId || null,
         school_id: schoolId,
         first_name: parsed.data.first_name,
@@ -128,9 +118,8 @@ const ReferentApplicationForm = ({ mode, onSubmitted }: Props) => {
         region: parsed.data.region || null,
         address: parsed.data.address || null,
         notes: parsed.data.notes || null,
-        // Commercial → directement soumis à l'admin. Référent → passe d'abord par le commercial de zone.
-        status: mode === "referent" ? "submitted" : "pending",
       });
+
       if (error) throw error;
 
       toast.success(
