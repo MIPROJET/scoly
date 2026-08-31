@@ -357,17 +357,9 @@ const Checkout = () => {
           discount_amount: discountAmount
         });
         
-        // Increment coupon used_count via direct update
-        const { data: currentCoupon } = await supabase
-          .from('coupons')
-          .select('used_count')
-          .eq('id', appliedCoupon.id)
-          .single();
-        
-        await supabase
-          .from('coupons')
-          .update({ used_count: (currentCoupon?.used_count || 0) + 1 })
-          .eq('id', appliedCoupon.id);
+        // Increment coupon used_count server-side (coupon table is not readable by clients)
+        await supabase.rpc('increment_coupon_usage', { _coupon_id: appliedCoupon.id });
+
         
         // Mark loyalty reward as used if it's a loyalty coupon
         if (appliedCoupon.code.startsWith('LOYALTY-')) {

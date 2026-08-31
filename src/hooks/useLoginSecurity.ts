@@ -238,27 +238,28 @@ export const useLoginSecurity = () => {
   }, [user, getStoredFingerprint]);
 
   // Block a login session (called when user clicks "Not me")
+  // This revokes ALL auth sessions/refresh tokens for the account server-side,
+  // so the intruder is really signed out (not just flagged in the database).
   const blockLoginSession = useCallback(async (sessionId: string) => {
     try {
-      console.log('[Security] Blocking session via RPC:', sessionId);
-
-      // Server-side RPC function for secure session revocation (no client fallback)
-      const { data, error } = await supabase.rpc('revoke_blocked_session', {
-        _session_id: sessionId
+      const { data, error } = await supabase.functions.invoke('revoke-session', {
+        body: { sessionId },
       });
 
-      if (error || data === false) {
+      if (error || !data?.success) {
         console.error('[Security] Error blocking session');
         return false;
       }
 
-      console.log('[Security] Session blocked successfully');
+      // Every session was revoked, including this device — force a fresh login.
+      await supabase.auth.signOut();
       return true;
     } catch (error) {
       console.error('[Security] Error blocking session:', error);
       return false;
     }
   }, []);
+
 
 
   // Confirm a login session (called when user clicks "Yes, it's me")
