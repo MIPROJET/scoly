@@ -3751,6 +3751,7 @@ export type Database = {
         Args: { _product_id: string }
         Returns: undefined
       }
+      is_service_request: { Args: never; Returns: boolean }
       log_sensitive_access: {
         Args: {
           _action: string
