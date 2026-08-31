@@ -287,11 +287,22 @@ const WriteArticle = () => {
     setLoading(true);
     try {
       // Guardrail: never store heavy base64 blobs in the DB. Upload to Storage.
+      // Private (paid) items already hold a storage path — leave them untouched.
       const processedMedia = await Promise.all(
-        form.media.map(async (item) => ({ url: await ensureStorageUrl(item.url, user.id), type: item.type }))
+        form.media.map(async (item) =>
+          item.bucket
+            ? { url: item.url, type: item.type, bucket: item.bucket }
+            : { url: await ensureStorageUrl(item.url, user.id), type: item.type },
+        )
       );
-      const coverImage = processedMedia.length > 0 ? processedMedia[0].url : null;
-      const mediaJson = processedMedia.map(item => ({ url: item.url, type: item.type }));
+      const cover = processedMedia.find((item) => !("bucket" in item && item.bucket));
+      const coverImage = cover ? cover.url : null;
+      const mediaJson = processedMedia.map(item => ({
+        url: item.url,
+        type: item.type,
+        ...(("bucket" in item && item.bucket) ? { bucket: item.bucket } : {}),
+      }));
+
 
 
       const articleData = {
