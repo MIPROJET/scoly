@@ -124,8 +124,9 @@ serve(async (req) => {
         user_id: user.id, // Use authenticated user ID, not client-supplied
         // SECURITY: always use the server-recomputed order total
         amount: payableAmount,
-
+        payment_method: paymentMethod || 'kkiapay',
         phone_number: phoneNumber,
+
         status: 'pending',
         metadata: {
           initiated_at: new Date().toISOString(),
