@@ -77,6 +77,25 @@ serve(async (req) => {
       );
     }
 
+    // SECURITY: recompute the payable amount from the (server-priced) order items,
+    // never trust orders.total_amount which originates from a client insert.
+    const { data: serverTotal, error: totalError } = await supabase
+      .rpc('order_server_total', { _order_id: orderId });
+
+    const payableAmount = Number(serverTotal ?? 0);
+    if (totalError || !Number.isFinite(payableAmount) || payableAmount <= 0) {
+      return new Response(
+        JSON.stringify({ error: 'Montant de la commande invalide' }),
+        { status: 409, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Keep the stored order total aligned with the authoritative server value
+    if (Number(order.total_amount ?? 0) !== payableAmount) {
+      await supabase.from('orders').update({ total_amount: payableAmount }).eq('id', orderId);
+    }
+
+
     const { data: existingPayment } = await supabase
       .from('payments')
       .select('id')
