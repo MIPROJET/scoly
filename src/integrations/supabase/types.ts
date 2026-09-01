@@ -3763,6 +3763,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      order_server_total: { Args: { _order_id: string }; Returns: number }
       pick_available_commercial: { Args: { _zone_id: string }; Returns: string }
       record_visit: {
         Args: {
