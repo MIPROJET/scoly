@@ -54,15 +54,20 @@ export async function finalizePayment(
     verified_at: new Date().toISOString(),
   };
 
-  // 3. Amount check against the authoritative order total
+  // 3. Amount check against the SERVER-recomputed order total (sum of the
+  //    server-priced order_items minus validated discount), never the
+  //    client-supplied orders.total_amount.
   if (newStatus === "completed" && payment.order_id) {
     const { data: order } = await supabase
       .from("orders").select("total_amount, status").eq("id", payment.order_id).maybeSingle();
 
-    const paid = Number(tx.amount ?? 0);
-    const expected = Number(order?.total_amount ?? 0);
+    const { data: serverTotal } = await supabase
+      .rpc("order_server_total", { _order_id: payment.order_id });
 
-    if (!order || paid + 1 < expected) {
+    const paid = Number(tx.amount ?? 0);
+    const expected = Number(serverTotal ?? order?.total_amount ?? 0);
+
+    if (!order || !(expected > 0) || paid + 1 < expected) {
       const { error: rejectError } = await supabase.rpc("finalize_payment_atomic", {
         _payment_id: payment.id,
         _transaction_id: transactionId,
@@ -73,6 +78,7 @@ export async function finalizePayment(
       return { ok: false, status: "failed", message: "Montant payé inférieur au total de la commande" };
     }
   }
+
 
   // 4. Persist the payment, confirm its order and create notifications in one
   // database transaction. This RPC is idempotent and never downgrades a payment.
