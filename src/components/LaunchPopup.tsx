@@ -249,7 +249,7 @@ export const LaunchPopup = () => {
 
                   {/* CTA */}
                   <motion.div {...reveal(8)} className="mt-4 sm:mt-5 flex flex-col gap-2">
-                    <Link to="/kits-ecole" onClick={handleClose} className="w-full">
+                    <Link to="/kits-scolaires?type=public" onClick={handleClose} className="w-full">
                       <Button className="w-full h-11 sm:h-12 text-sm sm:text-base font-bold tracking-wide">
                         DÉCOUVRIR LES KITS
                         <ArrowRight size={18} className="ml-2" />
