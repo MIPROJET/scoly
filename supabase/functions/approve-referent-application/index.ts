@@ -37,14 +37,14 @@ serve(async (req) => {
     const { data: { user: caller }, error: authError } = await admin.auth.getUser(token);
     if (authError || !caller) return json({ error: "Non autorisé" }, 401);
 
-    // Vérification stricte : admin, super_admin ou modérateur uniquement
+    // Vérification stricte : admin ou super_admin uniquement (PII candidats)
     const { data: callerRoles } = await admin
       .from("user_roles")
       .select("role")
       .eq("user_id", caller.id)
-      .in("role", ["super_admin", "admin", "moderator"]);
+      .in("role", ["super_admin", "admin"]);
     if (!callerRoles || callerRoles.length === 0) {
-      return json({ error: "Accès réservé à l'administration et à la modération" }, 403);
+      return json({ error: "Accès réservé à l'administration" }, 403);
     }
 
     const body = await req.json().catch(() => ({}));
