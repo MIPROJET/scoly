@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Navbar from "@/components/Navbar";
+import HeroAdvertisements from "@/components/HeroAdvertisements";
 import Footer from "@/components/Footer";
 import SmartImage from "@/components/SmartImage";
 import SEOHead from "@/components/SEOHead";
@@ -137,6 +138,13 @@ const Actualites = () => {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Publicités & mises en avant */}
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <HeroAdvertisements />
         </div>
       </section>
 
