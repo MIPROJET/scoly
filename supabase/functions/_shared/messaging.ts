@@ -1,6 +1,6 @@
 // Routage automatique des messages sortants SCOLY.
-// Zone UEMOA -> SMS via smsing.app (TP Cloud API)
-// Hors UEMOA -> WhatsApp au nom de SCOLY avec le logo officiel joint,
+// Côte d'Ivoire (indicatif 225) -> SMS via smsing.app (TP Cloud API)
+// Tout autre indicatif -> WhatsApp au nom de SCOLY avec le logo officiel joint,
 //               repli automatique en SMS si le canal WhatsApp échoue.
 
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
@@ -14,7 +14,10 @@ const SITE_URL = Deno.env.get("PUBLIC_SITE_URL") ?? "https://scoly.ci";
 /** Logo officiel SCOLY joint aux messages WhatsApp (jamais un logo généré). */
 export const SCOLY_LOGO_URL = `${SITE_URL}/logo-scoly-officiel-800.png`;
 
-/** Indicatifs de la zone UEMOA : SMS direct. */
+/** Indicatif national : seul le 225 (Côte d'Ivoire) part en SMS. */
+export const LOCAL_DIAL_CODE = "225";
+
+/** Indicatifs reconnus pour la normalisation des numéros. */
 export const UEMOA_DIAL_CODES = ["229", "226", "225", "245", "223", "227", "221", "228"];
 
 export type Channel = "sms" | "whatsapp";
@@ -48,9 +51,14 @@ export function isUemoa(msisdn: string): boolean {
   return UEMOA_DIAL_CODES.some((d) => msisdn.startsWith(d));
 }
 
-/** Canal retenu automatiquement selon le pays du destinataire. */
+/** Numéro ivoirien (indicatif 225). */
+export function isLocal(msisdn: string): boolean {
+  return msisdn.startsWith(LOCAL_DIAL_CODE);
+}
+
+/** Canal retenu automatiquement : SMS en Côte d'Ivoire, WhatsApp partout ailleurs. */
 export function channelFor(msisdn: string): Channel {
-  return isUemoa(msisdn) ? "sms" : "whatsapp";
+  return isLocal(msisdn) ? "sms" : "whatsapp";
 }
 
 export function renderTemplate(
