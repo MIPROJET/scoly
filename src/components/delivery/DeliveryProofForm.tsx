@@ -145,6 +145,16 @@ const DeliveryProofForm = ({ orderId, proofType, onSuccess, onCancel }: Delivery
       if (orderError) throw orderError;
       if (!accepted) throw new Error('Commande non autorisée');
 
+      // Notification automatique : en route (enlèvement) ou livrée (remise client).
+      supabase.functions
+        .invoke('notify-order', {
+          body: {
+            order_id: orderId,
+            event: proofType === 'pickup' ? 'order_in_transit' : 'order_delivered',
+          },
+        })
+        .catch(() => undefined);
+
       toast.success(proofType === 'pickup' ? 'Réception confirmée' : 'Remise au client soumise — attente confirmation client');
       onSuccess();
     } catch (error) {
