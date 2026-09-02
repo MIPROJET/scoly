@@ -94,6 +94,24 @@ export async function finalizePayment(
     return { ok: false, status: "pending", message: "Finalisation du paiement impossible" };
   }
 
+  // 5. Notification automatique « paiement confirmé » (SMS/WhatsApp), non bloquante.
+  if (newStatus === "completed" && payment.order_id) {
+    try {
+      const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/notify-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${serviceKey}`,
+          apikey: serviceKey,
+        },
+        body: JSON.stringify({ order_id: payment.order_id, event: "payment_confirmed" }),
+      });
+    } catch (e) {
+      console.error("[notify-order] envoi paiement confirmé impossible:", e);
+    }
+  }
+
   return {
     ok: true,
     status: newStatus,

@@ -416,6 +416,11 @@ const Checkout = () => {
 
       setOrderId(order.id);
       setOrderNumber(order.id.slice(0, 8).toUpperCase());
+
+      // Notification automatique « commande reçue » (SMS/WhatsApp) — non bloquante.
+      supabase.functions
+        .invoke('notify-order', { body: { order_id: order.id, event: 'order_placed' } })
+        .catch(() => undefined);
       
       // Move to payment step
       setStep('payment');

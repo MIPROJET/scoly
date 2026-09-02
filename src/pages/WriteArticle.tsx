@@ -562,7 +562,6 @@ const WriteArticle = () => {
                 <div>
                   <Label>Contenu (Français) *</Label>
                   <RichTextEditor
-                    key={form.content_fr ? `editor-${form.content_fr.substring(0, 50)}` : 'editor-empty'}
                     content={form.content_fr}
                     onChange={(content) => setForm(prev => ({ ...prev, content_fr: content }))}
                     placeholder="Rédigez votre article ici avec le formatage souhaité..."

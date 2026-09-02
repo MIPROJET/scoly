@@ -30,7 +30,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { isSafeUrl } from '@/utils/security';
 import { toast } from 'sonner';
@@ -124,6 +124,16 @@ const RichTextEditor = ({ content, onChange, placeholder = "Rédigez votre conte
       },
     },
   });
+
+  // Synchronise le contenu venant de l'extérieur (chargement d'un article,
+  // génération IA) sans remonter l'éditeur — la saisie manuelle reste fluide.
+  useEffect(() => {
+    if (!editor) return;
+    const incoming = content || '';
+    if (incoming !== editor.getHTML()) {
+      editor.commands.setContent(incoming, false);
+    }
+  }, [content, editor]);
 
   const addImage = useCallback(() => {
     if (imageUrl && editor) {

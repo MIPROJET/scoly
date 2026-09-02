@@ -331,6 +331,21 @@ export const useOrderMutations = () => {
         .select()
         .single();
       if (error) throw error;
+
+      // Notification automatique du client selon la nouvelle étape.
+      const eventByStatus: Record<string, string> = {
+        confirmed: "order_confirmed",
+        shipped: "order_shipped",
+        delivered: "order_delivered",
+        cancelled: "order_cancelled",
+      };
+      const event = eventByStatus[status];
+      if (event) {
+        supabase.functions
+          .invoke("notify-order", { body: { order_id: id, event } })
+          .catch(() => undefined);
+      }
+
       return data;
     },
     onSuccess: () => {
