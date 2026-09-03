@@ -74,6 +74,7 @@ serve(async (req) => {
     let userId: string | null = null;
     let createdNow = false;
     let email = "";
+    let generatedPassword: string | null = null;
     let firstName = str(body?.first_name, 100);
     let lastName = str(body?.last_name, 100);
     const phone = str(body?.phone, 30);
@@ -114,7 +115,7 @@ serve(async (req) => {
         }
         userId = created.user.id;
         createdNow = true;
-        (globalThis as any).__tmpPassword = password;
+        generatedPassword = password;
       }
     }
 
@@ -195,7 +196,7 @@ serve(async (req) => {
     const siteUrl = Deno.env.get("SITE_URL") || "https://scoly.ci";
     if (email) {
       try {
-        const password = (globalThis as any).__tmpPassword;
+        const password = generatedPassword;
         const html = brandedEmail({
           title: "Votre compte référent Scoly",
           preheader: "Votre espace référent est actif",
