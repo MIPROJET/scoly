@@ -131,7 +131,7 @@ const RichTextEditor = ({ content, onChange, placeholder = "Rédigez votre conte
     if (!editor) return;
     const incoming = content || '';
     if (incoming !== editor.getHTML()) {
-      editor.commands.setContent(incoming, false);
+      editor.commands.setContent(incoming, { emitUpdate: false });
     }
   }, [content, editor]);
 
