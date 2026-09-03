@@ -53,7 +53,6 @@ import CommissionsManagement from "@/components/admin/CommissionsManagement";
 import ReferralsManagement from "@/components/admin/ReferralsManagement";
 import ProductForm from "@/components/admin/ProductForm";
 import BulkProductImport from "@/components/admin/BulkProductImport";
-import PublicationsReview from "@/components/admin/PublicationsReview";
 import CouponManagement from "@/components/admin/CouponManagement";
 import AdvertisementsManagement from "@/components/admin/AdvertisementsManagement";
 import FAQManagement from "@/components/admin/FAQManagement";
@@ -87,7 +86,6 @@ type TabType =
   | "users"
   | "roles"
   | "articles"
-  | "review"
   | "promotions"
   | "promotions_mgmt"
   | "notifications"
@@ -162,7 +160,6 @@ const Admin = () => {
       label: "Contenu",
       items: [
         { id: "articles", label: "Actualités", icon: FileText },
-        { id: "review", label: "Validation", icon: Eye },
         { id: "advertisements", label: "Publicités", icon: Bell },
       ],
     },
@@ -334,7 +331,6 @@ const Admin = () => {
           {canRender("commissions") && <CommissionsManagement />}
           {canRender("promotions_mgmt") && <PromotionsManagement />}
           {canRender("flash_deals") && <FlashDealsManagement />}
-          {canRender("review") && <PublicationsReview />}
           {canRender("articles") && <ArticlesTab />}
           {canRender("promotions") && <CouponManagement />}
           {canRender("advertisements") && <AdvertisementsManagement />}
