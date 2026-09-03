@@ -266,42 +266,6 @@ const Actualites = () => {
         </div>
       </section>
 
-      {/* CTA Section - Fond solide */}
-      <section className="py-16 bg-muted">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-display font-bold text-foreground mb-4">
-              Vous êtes auteur ou enseignant ?
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Partagez vos connaissances avec des milliers d'étudiants et professionnels en publiant vos articles,
-              guides pratiques et conseils bureautiques sur Scoly.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              {user ? (
-                <Link to="/actualites/write">
-                  <Button variant="hero" size="lg">
-                    <PenTool size={18} />
-                    Commencer à écrire
-                  </Button>
-                </Link>
-              ) : (
-                <Link to="/auth">
-                  <Button variant="hero" size="lg">
-                    Créer un compte auteur
-                  </Button>
-                </Link>
-              )}
-              <Link to="/about">
-                <Button variant="outline" size="lg">
-                  En savoir plus
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <Footer />
     </main>
   );
