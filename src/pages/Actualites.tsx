@@ -35,7 +35,8 @@ interface Article {
 
 const Actualites = () => {
   const { language } = useLanguage();
-  const { user } = useAuth();
+  const { user, roles } = useAuth();
+  const canWrite = roles.some((r) => ["admin", "super_admin", "moderator"].includes(r));
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -169,7 +170,7 @@ const Actualites = () => {
               </Select>
             </div>
             
-            {user && (
+            {canWrite && (
               <Link to="/actualites/write">
                 <Button variant="hero">
                   <PenTool size={18} />
@@ -201,7 +202,7 @@ const Actualites = () => {
               <p className="text-muted-foreground mb-6">
                 Soyez le premier à publier un article !
               </p>
-              {user && (
+              {canWrite && (
                 <Link to="/actualites/write">
                   <Button variant="hero">
                     <PenTool size={18} />
