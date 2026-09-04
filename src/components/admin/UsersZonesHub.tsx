@@ -268,6 +268,7 @@ const UsersZonesHub = () => (
         <TaskAssignment />
       </TabsContent>
       <TabsContent value="referents" className="space-y-6">
+        <CreateReferentForm />
         <ReferentApplicationsReview scope="staff" />
         <ReferralsManagement />
       </TabsContent>
