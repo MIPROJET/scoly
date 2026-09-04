@@ -61,6 +61,7 @@ import PlatformSettings from "@/components/admin/PlatformSettings";
 import AdvancedStats from "@/components/admin/AdvancedStats";
 import PaymentsTab from "@/components/admin/PaymentsTab";
 import ShareStatsTab from "@/components/admin/ShareStatsTab";
+import TrafficTab from "@/components/admin/TrafficTab";
 import PromotionsManagement from "@/components/admin/PromotionsManagement";
 import FlashDealsManagement from "@/components/admin/FlashDealsManagement";
 import SocialMediaManager from "@/components/admin/SocialMediaManager";
@@ -319,7 +320,13 @@ const Admin = () => {
           <div className="min-w-0 max-w-full overflow-x-hidden p-3 sm:p-6 lg:p-8 pb-20 lg:pb-8 pt-4">
 
           {canRender("dashboard") && <AdminDashboard />}
-          {canRender("stats") && <AdvancedStats />}
+          {canRender("stats") && (
+            <div className="space-y-6">
+              <AdvancedStats />
+              <TrafficTab />
+              <ShareStatsTab />
+            </div>
+          )}
           {canRender("products") && <ProductsTab />}
 
           {canRender("categories") && <CategoriesTab />}
