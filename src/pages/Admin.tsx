@@ -319,7 +319,13 @@ const Admin = () => {
           <div className="min-w-0 max-w-full overflow-x-hidden p-3 sm:p-6 lg:p-8 pb-20 lg:pb-8 pt-4">
 
           {canRender("dashboard") && <AdminDashboard />}
-          {canRender("stats") && <AdvancedStats />}
+          {canRender("stats") && (
+            <div className="space-y-6">
+              <AdvancedStats />
+              <TrafficTab />
+              <ShareStatsTab />
+            </div>
+          )}
           {canRender("products") && <ProductsTab />}
 
           {canRender("categories") && <CategoriesTab />}
