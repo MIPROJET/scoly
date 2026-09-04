@@ -22,6 +22,7 @@ import RolesPermissionsManagement from "@/components/admin/RolesPermissionsManag
 import ZonesManagement from "@/components/admin/ZonesManagement";
 import ReferralsManagement from "@/components/admin/ReferralsManagement";
 import ReferentApplicationsReview from "@/components/referents/ReferentApplicationsReview";
+import CreateReferentForm from "@/components/referents/CreateReferentForm";
 import { ADMIN_SECTION_ACL, TEAM_SECTION_ACL, FINAL_ROLES } from "@/lib/rbac";
 
 const MODULES = [
