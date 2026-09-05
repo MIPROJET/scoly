@@ -2,40 +2,12 @@ import { ShoppingBag, Newspaper, Truck, ArrowRight, Package, CreditCard, Star, P
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { usePublicCounters } from "@/hooks/usePublicCounters";
 
 const SpacesSection = () => {
   const { t } = useLanguage();
-  const [stats, setStats] = useState({ products: 0, articles: 0 });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
-    try {
-      const { count: productsCount } = await supabase
-        .from('products')
-        .select('id', { count: 'exact', head: true })
-        .eq('is_active', true);
-
-      const { count: articlesCount } = await supabase
-        .from('articles')
-        .select('id', { count: 'exact', head: true })
-        .eq('status', 'published');
-
-      setStats({
-        products: productsCount || 0,
-        articles: articlesCount || 0,
-      });
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { counters, loading } = usePublicCounters();
+  const stats = { products: counters.products, articles: counters.articles };
 
   const formatNumber = (num: number) => {
     if (num === 0) return "0";

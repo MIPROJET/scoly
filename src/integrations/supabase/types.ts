@@ -3662,6 +3662,7 @@ export type Database = {
           usage_pct: number
         }[]
       }
+      get_public_counters: { Args: never; Returns: Json }
       get_public_runtime_settings: {
         Args: never
         Returns: {
