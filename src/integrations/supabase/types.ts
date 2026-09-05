@@ -3669,6 +3669,30 @@ export type Database = {
           value: string
         }[]
       }
+      get_referent_detail: {
+        Args: { _from?: string; _referent_id: string; _to?: string }
+        Returns: Json
+      }
+      get_referents_overview: {
+        Args: { _from?: string; _to?: string }
+        Returns: {
+          available_balance: number
+          city: string
+          created_at: string
+          email: string
+          full_name: string
+          last_activity_at: string
+          orders_amount: number
+          orders_count: number
+          phone: string
+          referrals_count: number
+          school_name: string
+          total_earned: number
+          total_withdrawn: number
+          user_id: string
+          zone_name: string
+        }[]
+      }
       get_referral_balance: {
         Args: { _user_id: string }
         Returns: {
