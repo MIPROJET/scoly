@@ -30,8 +30,8 @@ const HeroSection = () => {
 
   useEffect(() => {
     (async () => {
-      const [{ count }, { data: articles }] = await Promise.all([
-        supabase.from("products").select("id", { count: "exact", head: true }).eq("is_active", true),
+      const [{ data: counters }, { data: articles }] = await Promise.all([
+        supabase.rpc("get_public_counters"),
         supabase
           .from("articles")
           .select("id,title_fr,cover_image,category")
@@ -39,7 +39,7 @@ const HeroSection = () => {
           .order("created_at", { ascending: false })
           .limit(6),
       ]);
-      setStats({ products: count || 0 });
+      setStats({ products: Number((counters as { products?: number } | null)?.products || 0) });
       setNews((articles || []) as NewsItem[]);
     })();
   }, []);

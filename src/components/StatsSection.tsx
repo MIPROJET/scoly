@@ -1,6 +1,5 @@
 import { useLanguage } from "@/i18n/LanguageContext";
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { usePublicCounters } from "@/hooks/usePublicCounters";
 import AnimatedCounter from "@/components/AnimatedCounter";
 
 
@@ -14,89 +13,13 @@ interface Stats {
 
 const StatsSection = () => {
   const { t } = useLanguage();
-  const [stats, setStats] = useState<Stats>({
-    students: 0,
-    resources: 0,
-    schools: 0,
-    articles: 0,
-    products: 0,
-  });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchStats();
-    
-    // Set up realtime subscriptions
-    const channels = [
-      supabase
-        .channel('stats-profiles')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, fetchStats)
-        .subscribe(),
-      supabase
-        .channel('stats-articles')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'articles' }, fetchStats)
-        .subscribe(),
-      supabase
-        .channel('stats-products')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, fetchStats)
-        .subscribe(),
-      supabase
-        .channel('stats-resources')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'resources' }, fetchStats)
-        .subscribe(),
-      supabase
-        .channel('stats-vendors')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'vendor_settings' }, fetchStats)
-        .subscribe(),
-    ];
-
-    return () => {
-      channels.forEach(channel => supabase.removeChannel(channel));
-    };
-  }, []);
-
-  const fetchStats = async () => {
-    try {
-      // Fetch profiles count (students/users)
-      const { count: profilesCount } = await supabase
-        .from('profiles')
-        .select('id', { count: 'exact', head: true });
-
-      // Fetch published articles count
-      const { count: articlesCount } = await supabase
-        .from('articles')
-        .select('id', { count: 'exact', head: true })
-        .eq('status', 'published');
-
-      // Fetch active products count
-      const { count: productsCount } = await supabase
-        .from('products')
-        .select('id', { count: 'exact', head: true })
-        .eq('is_active', true);
-
-      // Fetch resources count
-      const { count: resourcesCount } = await supabase
-        .from('resources')
-        .select('id', { count: 'exact', head: true });
-
-      // Fetch verified vendor settings count (partners/schools)
-      const { count: vendorsCount } = await supabase
-        .from('vendor_settings')
-        .select('id', { count: 'exact', head: true })
-        .eq('is_verified', true);
-
-      setStats({
-        students: profilesCount || 0,
-        resources: resourcesCount || 0,
-        schools: vendorsCount || 0,
-        articles: articlesCount || 0,
-        products: productsCount || 0,
-      });
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-    } finally {
-      setLoading(false);
-    }
+  const { counters, loading } = usePublicCounters();
+  const stats: Stats = {
+    students: counters.profiles,
+    resources: counters.resources,
+    schools: counters.partners || counters.schools,
+    articles: counters.articles,
+    products: counters.products,
   };
 
   const statsData = [
