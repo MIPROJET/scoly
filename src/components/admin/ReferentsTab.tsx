@@ -144,7 +144,6 @@ const ReferentsTab = () => {
     [referents],
   );
 
-  const current = referents.find((r) => r.user_id === activeId);
 
   return (
     <div className="space-y-4">
@@ -376,7 +375,6 @@ const ReferentsTab = () => {
         </Tabs>
       )}
 
-      {current === undefined && null}
     </div>
   );
 };

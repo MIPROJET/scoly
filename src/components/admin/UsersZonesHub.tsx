@@ -23,6 +23,7 @@ import ZonesManagement from "@/components/admin/ZonesManagement";
 import ReferralsManagement from "@/components/admin/ReferralsManagement";
 import ReferentApplicationsReview from "@/components/referents/ReferentApplicationsReview";
 import CreateReferentForm from "@/components/referents/CreateReferentForm";
+import ReferentsTab from "@/components/admin/ReferentsTab";
 import { ADMIN_SECTION_ACL, TEAM_SECTION_ACL, FINAL_ROLES } from "@/lib/rbac";
 
 const MODULES = [
@@ -269,6 +270,7 @@ const UsersZonesHub = () => (
         <TaskAssignment />
       </TabsContent>
       <TabsContent value="referents" className="space-y-6">
+        <ReferentsTab />
         <CreateReferentForm />
         <ReferentApplicationsReview scope="staff" />
         <ReferralsManagement />
